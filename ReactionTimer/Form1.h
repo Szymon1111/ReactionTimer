@@ -1,8 +1,9 @@
 #pragma once
 #include <chrono> 
 #include "Stopwatch.h"
+#include "ChartForm1.h"
 
-namespace CppCLRWinFormsProject {
+namespace ReactionTimer {
 
 	using namespace System;
 	using namespace System::ComponentModel;
@@ -54,9 +55,7 @@ namespace CppCLRWinFormsProject {
 	private: System::Windows::Forms::Label^ avgTimeTitle;
 	private: System::Windows::Forms::Label^ avgTimeLabel;
 	private: System::Windows::Forms::Button^ startStopButton;
-	private: System::Windows::Forms::DataVisualization::Charting::Chart^ chart;
-
-
+	private: System::Windows::Forms::Button^ chartButton;
 
 
 
@@ -81,9 +80,6 @@ namespace CppCLRWinFormsProject {
 		void InitializeComponent(void)
 		{
 			this->components = (gcnew System::ComponentModel::Container());
-			System::Windows::Forms::DataVisualization::Charting::ChartArea^ chartArea1 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
-			System::Windows::Forms::DataVisualization::Charting::Legend^ legend1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
-			System::Windows::Forms::DataVisualization::Charting::Series^ series1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
 			this->button1 = (gcnew System::Windows::Forms::Button());
 			this->button2 = (gcnew System::Windows::Forms::Button());
 			this->button3 = (gcnew System::Windows::Forms::Button());
@@ -100,9 +96,8 @@ namespace CppCLRWinFormsProject {
 			this->avgTimeTitle = (gcnew System::Windows::Forms::Label());
 			this->avgTimeLabel = (gcnew System::Windows::Forms::Label());
 			this->startStopButton = (gcnew System::Windows::Forms::Button());
-			this->chart = (gcnew System::Windows::Forms::DataVisualization::Charting::Chart());
+			this->chartButton = (gcnew System::Windows::Forms::Button());
 			this->buttonsLayout->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->chart))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// button1
@@ -361,23 +356,22 @@ namespace CppCLRWinFormsProject {
 			this->startStopButton->UseVisualStyleBackColor = false;
 			this->startStopButton->Click += gcnew System::EventHandler(this, &Form1::startStopButton_Click);
 			// 
-			// chart
+			// chartButton
 			// 
-			this->chart->BackImageAlignment = System::Windows::Forms::DataVisualization::Charting::ChartImageAlignmentStyle::Center;
-			chartArea1->Name = L"ChartArea1";
-			this->chart->ChartAreas->Add(chartArea1);
-			legend1->Name = L"Legend1";
-			this->chart->Legends->Add(legend1);
-			this->chart->Location = System::Drawing::Point(625, 127);
-			this->chart->Name = L"chart";
-			this->chart->Palette = System::Windows::Forms::DataVisualization::Charting::ChartColorPalette::Grayscale;
-			series1->ChartArea = L"ChartArea1";
-			series1->Legend = L"Legend1";
-			series1->Name = L"Czasy reakcji";
-			this->chart->Series->Add(series1);
-			this->chart->Size = System::Drawing::Size(633, 315);
-			this->chart->TabIndex = 15;
-			this->chart->Text = L"Wykres";
+			this->chartButton->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(138)), static_cast<System::Int32>(static_cast<System::Byte>(138)),
+				static_cast<System::Int32>(static_cast<System::Byte>(138)));
+			this->chartButton->FlatAppearance->BorderSize = 0;
+			this->chartButton->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->chartButton->Font = (gcnew System::Drawing::Font(L"Montserrat SemiBold", 21.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(238)));
+			this->chartButton->ForeColor = System::Drawing::Color::Snow;
+			this->chartButton->Location = System::Drawing::Point(625, 342);
+			this->chartButton->Name = L"chartButton";
+			this->chartButton->Size = System::Drawing::Size(300, 100);
+			this->chartButton->TabIndex = 15;
+			this->chartButton->Text = L"Wykres";
+			this->chartButton->UseVisualStyleBackColor = false;
+			this->chartButton->Click += gcnew System::EventHandler(this, &Form1::chartButton_Click);
 			// 
 			// Form1
 			// 
@@ -386,7 +380,7 @@ namespace CppCLRWinFormsProject {
 			this->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(83)), static_cast<System::Int32>(static_cast<System::Byte>(87)),
 				static_cast<System::Int32>(static_cast<System::Byte>(89)));
 			this->ClientSize = System::Drawing::Size(1280, 720);
-			this->Controls->Add(this->chart);
+			this->Controls->Add(this->chartButton);
 			this->Controls->Add(this->startStopButton);
 			this->Controls->Add(this->avgTimeLabel);
 			this->Controls->Add(this->avgTimeTitle);
@@ -399,7 +393,6 @@ namespace CppCLRWinFormsProject {
 			this->Name = L"Form1";
 			this->Text = L"Pomiar czasu rekacji";
 			this->buttonsLayout->ResumeLayout(false);
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->chart))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -419,6 +412,8 @@ namespace CppCLRWinFormsProject {
 		int bestTimeValue = 0;
 
 		System::Random^ random = gcnew System::Random();
+
+		ReactionTimer::ChartForm^ chartForm = gcnew ReactionTimer::ChartForm();
 
 		steady_clock::time_point* startTime = new steady_clock::time_point();
 
@@ -453,7 +448,7 @@ namespace CppCLRWinFormsProject {
 				this->currentTimeLabel->Text = currentTimeValue.ToString() + "ms";
 				this->timesList->Items->Insert(0, currentTimeValue);
 
-				this->chart->Series[0]->Points->Add(currentTimeValue);
+				chartForm->chart->Series[0]->Points->Add(currentTimeValue);
 
 				avgTimeValue = 0;
 
@@ -531,6 +526,9 @@ namespace CppCLRWinFormsProject {
 				activateInTicks = 500;
 			}
 				
+		}
+		System::Void chartButton_Click(System::Object^ sender, System::EventArgs^ e) {
+			chartForm->ShowDialog();
 		}
 };
 }
