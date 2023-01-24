@@ -2,6 +2,7 @@
 #include <chrono> 
 #include "Stopwatch.h"
 #include "ChartForm1.h"
+#include "Author.h"
 
 namespace ReactionTimer {
 
@@ -56,6 +57,7 @@ namespace ReactionTimer {
 	private: System::Windows::Forms::Label^ avgTimeLabel;
 	private: System::Windows::Forms::Button^ startStopButton;
 	private: System::Windows::Forms::Button^ chartButton;
+	private: System::Windows::Forms::Button^ authorFormButton;
 
 
 
@@ -97,6 +99,7 @@ namespace ReactionTimer {
 			this->avgTimeLabel = (gcnew System::Windows::Forms::Label());
 			this->startStopButton = (gcnew System::Windows::Forms::Button());
 			this->chartButton = (gcnew System::Windows::Forms::Button());
+			this->authorFormButton = (gcnew System::Windows::Forms::Button());
 			this->buttonsLayout->SuspendLayout();
 			this->SuspendLayout();
 			// 
@@ -365,13 +368,30 @@ namespace ReactionTimer {
 			this->chartButton->Font = (gcnew System::Drawing::Font(L"Montserrat SemiBold", 21.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(238)));
 			this->chartButton->ForeColor = System::Drawing::Color::Snow;
-			this->chartButton->Location = System::Drawing::Point(625, 342);
+			this->chartButton->Location = System::Drawing::Point(937, 462);
 			this->chartButton->Name = L"chartButton";
 			this->chartButton->Size = System::Drawing::Size(300, 100);
 			this->chartButton->TabIndex = 15;
 			this->chartButton->Text = L"Wykres";
 			this->chartButton->UseVisualStyleBackColor = false;
 			this->chartButton->Click += gcnew System::EventHandler(this, &Form1::chartButton_Click);
+			// 
+			// authorFormButton
+			// 
+			this->authorFormButton->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(138)),
+				static_cast<System::Int32>(static_cast<System::Byte>(138)), static_cast<System::Int32>(static_cast<System::Byte>(138)));
+			this->authorFormButton->FlatAppearance->BorderSize = 0;
+			this->authorFormButton->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->authorFormButton->Font = (gcnew System::Drawing::Font(L"Montserrat SemiBold", 21.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(238)));
+			this->authorFormButton->ForeColor = System::Drawing::Color::Snow;
+			this->authorFormButton->Location = System::Drawing::Point(937, 568);
+			this->authorFormButton->Name = L"authorFormButton";
+			this->authorFormButton->Size = System::Drawing::Size(300, 100);
+			this->authorFormButton->TabIndex = 16;
+			this->authorFormButton->Text = L"O autorze";
+			this->authorFormButton->UseVisualStyleBackColor = false;
+			this->authorFormButton->Click += gcnew System::EventHandler(this, &Form1::authorFormButton_Click);
 			// 
 			// Form1
 			// 
@@ -380,6 +400,7 @@ namespace ReactionTimer {
 			this->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(83)), static_cast<System::Int32>(static_cast<System::Byte>(87)),
 				static_cast<System::Int32>(static_cast<System::Byte>(89)));
 			this->ClientSize = System::Drawing::Size(1280, 720);
+			this->Controls->Add(this->authorFormButton);
 			this->Controls->Add(this->chartButton);
 			this->Controls->Add(this->startStopButton);
 			this->Controls->Add(this->avgTimeLabel);
@@ -414,6 +435,7 @@ namespace ReactionTimer {
 		System::Random^ random = gcnew System::Random();
 
 		ReactionTimer::ChartForm^ chartForm = gcnew ReactionTimer::ChartForm();
+		ReactionTimer::Author^ authorForm = gcnew ReactionTimer::Author();
 
 		steady_clock::time_point* startTime = new steady_clock::time_point();
 
@@ -529,6 +551,10 @@ namespace ReactionTimer {
 		}
 		System::Void chartButton_Click(System::Object^ sender, System::EventArgs^ e) {
 			chartForm->ShowDialog();
+		}
+
+		System::Void authorFormButton_Click(System::Object^ sender, System::EventArgs^ e) {
+			authorForm->ShowDialog();
 		}
 };
 }
